@@ -1,0 +1,6 @@
+version = "0.0.1"
+description = "MIPS32 disassembler"
+requires = "bitstring"
+archive(byte) = "mips32dis.cma"
+archive(native) = "mips32dis.cmxa"
+exists_if = "mips32dis.cma"
