@@ -3,10 +3,10 @@ all:
 	obuild build
 
 install:
-	ocamlfind install elf src/META $(wildcard dist/build/lib-elf/*)
+	ocamlfind install mips32dis src/META $(wildcard dist/build/lib-mips32dis/*)
 
 uninstall:
-	ocamlfind remove elf
+	ocamlfind remove mips32dis
 
 test:
 	obuild test
