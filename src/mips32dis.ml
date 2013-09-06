@@ -751,4 +751,4 @@ let decode_inst bytes =
 let decode bytes =
   if String.length bytes <> 4
     then Invalid
-    else decode_inst (Bitstring.of_string bytes)
+    else decode_inst (Bitstring.bitstring_of_string bytes)
