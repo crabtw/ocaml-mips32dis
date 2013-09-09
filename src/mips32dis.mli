@@ -28,149 +28,151 @@ type cpr2 =
   | C2_16 | C2_17 | C2_18 | C2_19 | C2_20 | C2_21 | C2_22 | C2_23
   | C2_24 | C2_25 | C2_26 | C2_27 | C2_28 | C2_29 | C2_30 | C2_31
 
-type i32 = Int32.t
+type register =
+  | GPR of gpr | FPR of fpr   | FCR of fcr
+  | HWR of hwr | CPR0 of cpr0 | CPR2 of cpr2
 
-type inst =
-  | J     of i32
-  | JAL   of i32
-  | BEQ   of gpr * gpr * i32
-  | BNE   of gpr * gpr * i32
-  | BLEZ  of gpr * i32
-  | BGTZ  of gpr * i32
-  | ADDI  of gpr * gpr * i32
-  | ADDIU of gpr * gpr * i32
-  | SLTI  of gpr * gpr * i32
-  | SLTIU of gpr * gpr * i32
-  | ANDI  of gpr * gpr * i32
-  | ORI   of gpr * gpr * i32
-  | XORI  of gpr * gpr * i32
-  | LUI   of gpr * i32
-  | BEQL  of gpr * gpr * i32
-  | BNEL  of gpr * gpr * i32
-  | BLEZL of gpr * i32
-  | BGTZL of gpr * i32
-  | JALX  of i32
-  | LB    of gpr * gpr * i32
-  | LH    of gpr * gpr * i32
-  | LWL   of gpr * gpr * i32
-  | LW    of gpr * gpr * i32
-  | LBU   of gpr * gpr * i32
-  | LHU   of gpr * gpr * i32
-  | LWR   of gpr * gpr * i32
-  | SB    of gpr * gpr * i32
-  | SH    of gpr * gpr * i32
-  | SWL   of gpr * gpr * i32
-  | SW    of gpr * gpr * i32
-  | SWR   of gpr * gpr * i32
-  | CACHE of int * gpr * i32
-  | LL    of gpr * gpr * i32
-  | LWC1  of fpr * gpr * i32
-  | LWC2  of cpr2 * gpr * i32
-  | PREF  of int * gpr * i32
-  | LDC1  of fpr * gpr * i32
-  | LDC2  of cpr2 * gpr * i32
-  | SC    of gpr * gpr * i32
-  | SWC1  of fpr * gpr * i32
-  | SWC2  of cpr2 * gpr * i32
-  | SDC1  of fpr * gpr * i32
-  | SDC2  of cpr2 * gpr * i32
+type opcode =
+  | J
+  | JAL
+  | BEQ
+  | BNE
+  | BLEZ
+  | BGTZ
+  | ADDI
+  | ADDIU
+  | SLTI
+  | SLTIU
+  | ANDI
+  | ORI
+  | XORI
+  | LUI
+  | BEQL
+  | BNEL
+  | BLEZL
+  | BGTZL
+  | JALX
+  | LB
+  | LH
+  | LWL
+  | LW
+  | LBU
+  | LHU
+  | LWR
+  | SB
+  | SH
+  | SWL
+  | SW
+  | SWR
+  | CACHE
+  | LL
+  | LWC1
+  | LWC2
+  | PREF
+  | LDC1
+  | LDC2
+  | SC
+  | SWC1
+  | SWC2
+  | SDC1
+  | SDC2
 
-  | SLL     of gpr * gpr * int
-  | MOVF    of gpr * gpr * int
-  | MOVT    of gpr * gpr * int
-  | SRL     of gpr * gpr * int
-  | ROTR    of gpr * gpr * int
-  | SRA     of gpr * gpr * int
-  | SLLV    of gpr * gpr * gpr
-  | SRLV    of gpr * gpr * gpr
-  | ROTRV   of gpr * gpr * gpr
-  | SRAV    of gpr * gpr * gpr
-  | JR      of gpr
-  | JALR    of gpr * gpr
-  | MOVZ    of gpr * gpr * gpr
-  | MOVN    of gpr * gpr * gpr
-  | SYSCALL of int
-  | BREAK   of int
-  | SYNC    of int
-  | MFHI    of gpr
-  | MTHI    of gpr
-  | MFLO    of gpr
-  | MTLO    of gpr
-  | MULT    of gpr * gpr
-  | MULTU   of gpr * gpr
-  | DIV     of gpr * gpr
-  | DIVU    of gpr * gpr
-  | ADD     of gpr * gpr * gpr
-  | ADDU    of gpr * gpr * gpr
-  | SUB     of gpr * gpr * gpr
-  | SUBU    of gpr * gpr * gpr
-  | AND     of gpr * gpr * gpr
-  | OR      of gpr * gpr * gpr
-  | XOR     of gpr * gpr * gpr
-  | NOR     of gpr * gpr * gpr
-  | SLT     of gpr * gpr * gpr
-  | SLTU    of gpr * gpr * gpr
-  | TGE     of gpr * gpr
-  | TGEU    of gpr * gpr
-  | TLT     of gpr * gpr
-  | TLTU    of gpr * gpr
-  | TEQ     of gpr * gpr
-  | TNE     of gpr * gpr
+  | SLL
+  | MOVF
+  | MOVT
+  | SRL
+  | ROTR
+  | SRA
+  | SLLV
+  | SRLV
+  | ROTRV
+  | SRAV
+  | JR
+  | JALR
+  | MOVZ
+  | MOVN
+  | SYSCALL
+  | BREAK
+  | SYNC
+  | MFHI
+  | MTHI
+  | MFLO
+  | MTLO
+  | MULT
+  | MULTU
+  | DIV
+  | DIVU
+  | ADD
+  | ADDU
+  | SUB
+  | SUBU
+  | AND
+  | OR
+  | XOR
+  | NOR
+  | SLT
+  | SLTU
+  | TGE
+  | TGEU
+  | TLT
+  | TLTU
+  | TEQ
+  | TNE
 
-  | BLTZ    of gpr * i32
-  | BGEZ    of gpr * i32
-  | BLTZL   of gpr * i32
-  | BGEZL   of gpr * i32
-  | TGEI    of gpr * i32
-  | TGEIU   of gpr * i32
-  | TLTI    of gpr * i32
-  | TLTIU   of gpr * i32
-  | TEQI    of gpr * i32
-  | TNEI    of gpr * i32
-  | BLTZAL  of gpr * i32
-  | BGEZAL  of gpr * i32
-  | BLTZALL of gpr * i32
-  | BGEZALL of gpr * i32
-  | SYNCI   of gpr * i32
+  | BLTZ
+  | BGEZ
+  | BLTZL
+  | BGEZL
+  | TGEI
+  | TGEIU
+  | TLTI
+  | TLTIU
+  | TEQI
+  | TNEI
+  | BLTZAL
+  | BGEZAL
+  | BLTZALL
+  | BGEZALL
+  | SYNCI
 
-  | MADD  of gpr * gpr
-  | MADDU of gpr * gpr
-  | MUL   of gpr * gpr * gpr
-  | MSUB  of gpr * gpr
-  | MSUBU of gpr * gpr
-  | CLZ   of gpr * gpr
-  | CLO   of gpr * gpr
-  | SDBBP of int
+  | MADD
+  | MADDU
+  | MUL
+  | MSUB
+  | MSUBU
+  | CLZ
+  | CLO
+  | SDBBP
 
-  | EXT    of gpr * gpr * int * int
-  | INS    of gpr * gpr * int * int
-  | LWLE   of gpr * gpr * i32
-  | LWRE   of gpr * gpr * i32
-  | CACHEE of int * gpr * i32
-  | SBE    of gpr * gpr * i32
-  | SHE    of gpr * gpr * i32
-  | SCE    of gpr * gpr * i32
-  | SWE    of gpr * gpr * i32
-  | WSBH   of gpr * gpr
-  | SEB    of gpr * gpr
-  | SEH    of gpr * gpr
-  | SWLE   of gpr * gpr * i32
-  | SWRE   of gpr * gpr * i32
-  | PREFE  of int * gpr * i32
-  | LBUE   of gpr * gpr * i32
-  | LHUE   of gpr * gpr * i32
-  | LBE    of gpr * gpr * i32
-  | LHE    of gpr * gpr * i32
-  | LLE    of gpr * gpr * i32
-  | LWE    of gpr * gpr * i32
-  | RDHWR  of gpr * hwr
+  | EXT
+  | INS
+  | LWLE
+  | LWRE
+  | CACHEE
+  | SBE
+  | SHE
+  | SCE
+  | SWE
+  | WSBH
+  | SEB
+  | SEH
+  | SWLE
+  | SWRE
+  | PREFE
+  | LBUE
+  | LHUE
+  | LBE
+  | LHE
+  | LLE
+  | LWE
+  | RDHWR
 
-  | MFC0   of gpr * cpr0 * int
-  | MTC0   of gpr * cpr0 * int
-  | RDPGPR of gpr * gpr
-  | DI     of gpr
-  | EI     of gpr
-  | WRPGPR of gpr * gpr
+  | MFC0
+  | MTC0
+  | RDPGPR
+  | DI
+  | EI
+  | WRPGPR
 
   | TLBR
   | TLBWI
@@ -182,125 +184,142 @@ type inst =
   | DERET
   | WAIT
 
-  | MFC1  of gpr * fpr
-  | CFC1  of gpr * fcr
-  | MFHC1 of gpr * fpr
-  | MTC1  of gpr * fpr
-  | CTC1  of gpr * fcr
-  | MTHC1 of gpr * fpr
-  | BC1F  of int * i32
-  | BC1FL of int * i32
-  | BC1T  of int * i32
-  | BC1TL of int * i32
+  | MFC1
+  | CFC1
+  | MFHC1
+  | MTC1
+  | CTC1
+  | MTHC1
+  | BC1F
+  | BC1FL
+  | BC1T
+  | BC1TL
 
-  | ADD_S     of fpr * fpr * fpr
-  | SUB_S     of fpr * fpr * fpr
-  | MUL_S     of fpr * fpr * fpr
-  | DIV_S     of fpr * fpr * fpr
-  | SQRT_S    of fpr * fpr
-  | ABS_S     of fpr * fpr
-  | MOV_S     of fpr * fpr
-  | NEG_S     of fpr * fpr
-  | ROUND_L_S of fpr * fpr
-  | TRUNC_L_S of fpr * fpr
-  | CEIL_L_S  of fpr * fpr
-  | FLOOR_L_S of fpr * fpr
-  | ROUND_W_S of fpr * fpr
-  | TRUNC_W_S of fpr * fpr
-  | CEIL_W_S  of fpr * fpr
-  | FLOOR_W_S of fpr * fpr
-  | MOVF_S    of fpr * fpr * int
-  | MOVT_S    of fpr * fpr * int
-  | MOVZ_S    of fpr * fpr * gpr
-  | MOVN_S    of fpr * fpr * gpr
-  | RECIP_S   of fpr * fpr
-  | RSQRT_S   of fpr * fpr
-  | CVT_D_S   of fpr * fpr
-  | CVT_W_S   of fpr * fpr
-  | CVT_L_S   of fpr * fpr
-  | CVT_PS_S  of fpr * fpr * fpr
+  | ADD_S
+  | SUB_S
+  | MUL_S
+  | DIV_S
+  | SQRT_S
+  | ABS_S
+  | MOV_S
+  | NEG_S
+  | ROUND_L_S
+  | TRUNC_L_S
+  | CEIL_L_S
+  | FLOOR_L_S
+  | ROUND_W_S
+  | TRUNC_W_S
+  | CEIL_W_S
+  | FLOOR_W_S
+  | MOVF_S
+  | MOVT_S
+  | MOVZ_S
+  | MOVN_S
+  | RECIP_S
+  | RSQRT_S
+  | CVT_D_S
+  | CVT_W_S
+  | CVT_L_S
+  | CVT_PS_S
 
-  | ADD_D     of fpr * fpr * fpr
-  | SUB_D     of fpr * fpr * fpr
-  | MUL_D     of fpr * fpr * fpr
-  | DIV_D     of fpr * fpr * fpr
-  | SQRT_D    of fpr * fpr
-  | ABS_D     of fpr * fpr
-  | MOV_D     of fpr * fpr
-  | NEG_D     of fpr * fpr
-  | ROUND_L_D of fpr * fpr
-  | TRUNC_L_D of fpr * fpr
-  | CEIL_L_D  of fpr * fpr
-  | FLOOR_L_D of fpr * fpr
-  | ROUND_W_D of fpr * fpr
-  | TRUNC_W_D of fpr * fpr
-  | CEIL_W_D  of fpr * fpr
-  | FLOOR_W_D of fpr * fpr
-  | MOVF_D    of fpr * fpr * int
-  | MOVT_D    of fpr * fpr * int
-  | MOVZ_D    of fpr * fpr * gpr
-  | MOVN_D    of fpr * fpr * gpr
-  | RECIP_D   of fpr * fpr
-  | RSQRT_D   of fpr * fpr
-  | CVT_S_D   of fpr * fpr
-  | CVT_W_D   of fpr * fpr
-  | CVT_L_D   of fpr * fpr
+  | ADD_D
+  | SUB_D
+  | MUL_D
+  | DIV_D
+  | SQRT_D
+  | ABS_D
+  | MOV_D
+  | NEG_D
+  | ROUND_L_D
+  | TRUNC_L_D
+  | CEIL_L_D
+  | FLOOR_L_D
+  | ROUND_W_D
+  | TRUNC_W_D
+  | CEIL_W_D
+  | FLOOR_W_D
+  | MOVF_D
+  | MOVT_D
+  | MOVZ_D
+  | MOVN_D
+  | RECIP_D
+  | RSQRT_D
+  | CVT_S_D
+  | CVT_W_D
+  | CVT_L_D
 
-  | CVT_S_W of fpr * fpr
-  | CVT_D_W of fpr * fpr
+  | CVT_S_W
+  | CVT_D_W
 
-  | CVT_S_L of fpr * fpr
-  | CVT_D_L of fpr * fpr
+  | CVT_S_L
+  | CVT_D_L
 
-  | ADD_PS   of fpr * fpr * fpr
-  | SUB_PS   of fpr * fpr * fpr
-  | MUL_PS   of fpr * fpr * fpr
-  | ABS_PS   of fpr * fpr
-  | MOV_PS   of fpr * fpr
-  | NEG_PS   of fpr * fpr
-  | MOVF_PS  of fpr * fpr * int
-  | MOVT_PS  of fpr * fpr * int
-  | MOVZ_PS  of fpr * fpr * gpr
-  | MOVN_PS  of fpr * fpr * gpr
-  | CVT_S_PU of fpr * fpr
-  | CVT_S_PL of fpr * fpr
-  | PLL_PS   of fpr * fpr * fpr
-  | PLU_PS   of fpr * fpr * fpr
-  | PUL_PS   of fpr * fpr * fpr
-  | PUU_PS   of fpr * fpr * fpr
+  | ADD_PS
+  | SUB_PS
+  | MUL_PS
+  | ABS_PS
+  | MOV_PS
+  | NEG_PS
+  | MOVF_PS
+  | MOVT_PS
+  | MOVZ_PS
+  | MOVN_PS
+  | CVT_S_PU
+  | CVT_S_PL
+  | PLL_PS
+  | PLU_PS
+  | PUL_PS
+  | PUU_PS
 
-  | MFC2  of gpr * int
-  | CFC2  of gpr * int
-  | MFHC2 of gpr * int
-  | MTC2  of gpr * int
-  | CTC2  of gpr * int
-  | MTHC2 of gpr * int
-  | BC2F  of int * i32
-  | BC2FL of int * i32
-  | BC2T  of int * i32
-  | BC2TL of int * i32
+  | MFC2
+  | CFC2
+  | MFHC2
+  | MTC2
+  | CTC2
+  | MTHC2
+  | BC2F
+  | BC2FL
+  | BC2T
+  | BC2TL
 
-  | LWXC1    of fpr * gpr * gpr
-  | LDXC1    of fpr * gpr * gpr
-  | LUXC1    of fpr * gpr * gpr
-  | SWXC1    of fpr * gpr * gpr
-  | SDXC1    of fpr * gpr * gpr
-  | SUXC1    of fpr * gpr * gpr
-  | PREFX    of int * gpr * gpr
-  | ALNV_PS  of fpr * fpr * fpr * gpr
-  | MADD_S   of fpr * fpr * fpr * fpr
-  | MADD_D   of fpr * fpr * fpr * fpr
-  | MADD_PS  of fpr * fpr * fpr * fpr
-  | MSUB_S   of fpr * fpr * fpr * fpr
-  | MSUB_D   of fpr * fpr * fpr * fpr
-  | MSUB_PS  of fpr * fpr * fpr * fpr
-  | NMADD_S  of fpr * fpr * fpr * fpr
-  | NMADD_D  of fpr * fpr * fpr * fpr
-  | NMADD_PS of fpr * fpr * fpr * fpr
-  | NMSUB_S  of fpr * fpr * fpr * fpr
-  | NMSUB_D  of fpr * fpr * fpr * fpr
-  | NMSUB_PS of fpr * fpr * fpr * fpr
+  | LWXC1
+  | LDXC1
+  | LUXC1
+  | SWXC1
+  | SDXC1
+  | SUXC1
+  | PREFX
+  | ALNV_PS
+  | MADD_S
+  | MADD_D
+  | MADD_PS
+  | MSUB_S
+  | MSUB_D
+  | MSUB_PS
+  | NMADD_S
+  | NMADD_D
+  | NMADD_PS
+  | NMSUB_S
+  | NMSUB_D
+  | NMSUB_PS
 
   | Invalid
 
-val decode : string -> inst
+type i32 = Int32.t
+
+type operand =
+  | Reg of register
+  | Imm of i32
+  | Addr_abs of i32
+  | Addr_rel of i32
+  | Mem_imm of register * i32
+  | Mem_reg of register * register
+
+type instruction = {
+  opcode : opcode;
+  operands : operand list;
+}
+
+val decode : string -> instruction
+
+val string_of_inst : instruction -> string
