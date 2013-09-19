@@ -1,6 +1,12 @@
+# OASIS_START
+# DO NOT EDIT (digest: 69bbc2afa35e0a8fb99bd4f01fd37d4d)
 version = "0.0.1"
 description = "MIPS32 disassembler"
 requires = "bitstring"
 archive(byte) = "mips32dis.cma"
+archive(byte, plugin) = "mips32dis.cma"
 archive(native) = "mips32dis.cmxa"
+archive(native, plugin) = "mips32dis.cmxs"
 exists_if = "mips32dis.cma"
+# OASIS_STOP
+
